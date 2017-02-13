@@ -3,7 +3,7 @@ var router = express.Router();
 var rp = require('request-promise');
 const PI_URL = 'http://10.6.64.164:3000';
 
-router.get('/unlock', function(req, res, next) {
+router.get('/', function(req, res, next) {
 
   var options = {
     uri: `${PI_URL}/unlock`,
