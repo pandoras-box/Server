@@ -42,5 +42,6 @@ router.post('/', function(req, res, next) {
                 console.log(err);
                 res.json("boo");
             });
-        }
+        });
+
         module.exports = router;
