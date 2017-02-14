@@ -4,41 +4,40 @@ const dbQueries = require('../../db/queries');
 const fbAuth = require ('../../auth/facebook');
 const jwtAuth = require('../../auth/jwtAuth');
 
+
 router.post('/', function(req, res, next) {
-  // add logic to check local storage for a Long term token
-  //get the token and make sure it is facebook valid
-  //if valid, give the user a JWT with their userID
-  //if it is not valid, make them sign in again
-  //if it does not exist, add them to the db and give a token
+  let currentUser = null;
+    fbAuth.getFBShortAccess(req.body.token)
+        .then(function(result) {
+            var parsedUserInfo = JSON.parse(result);
+            dbQueries.checkNewUser(req.body.parentOrChild, parsedUserInfo.email)
+                .then((user) => { // if user is found
+                    if (user) {
+                        //pass the JWT
+                        // return user
+                    } else {
+                      console.log(1);
+                        return dbQueries.addNewUser(req.body.parentOrChild, parsedUserInfo)
+                    }
+                })
+                .then((user)=>{
+                  console.log(2);
+                  currentUser = user;
+                      if (req.body.parentOrChild === 'parent') {
+                          return dbQueries.addParentChild(user.id)
+                      } else if (req.body.parentOrChild === 'child') {
+                          //return parentChildID that corresponds to that child
+                      }
+                })
+                .then((parentChildTableID)=>{
+                  currentUser.parentChildTableID = parentChildTableID;
+                  // create JWT with full user
+                  console.log(currentUser); // use this to set up the JWT
 
-  fbAuth.getFBShortAccess(req.body.token)
-  .then(function (result) {
-    // we have token information from facebook back
-    // check the db for the email. If it matches, give them a JWT
-    // if it doesn't match, add them.
-    var parsedUserInfo = JSON.parse(result);
-    console.log(parsedUserInfo.email);
-    dbQueries.checkNewUser(parsedUserInfo.email)
-    .then((user)=>{ // if user is found
-      console.log(user);
-      console.log(parsedUserInfo);
-      if (user) {
-        console.log('no');
-
-      } else {
-        console.log('yes');
-        dbQueries.addNewUser(parsedUserInfo)
-        .then((newUserID)=>{
-          jwtAuth.createJWT(user);
-          console.log(newUserID); // use this to set up the JWT
-        })
-      }
-    })
-  })
-  .catch(function (err) {
-    console.log(err);
-    res.json("boo");
-  });
+        .catch(function(err) {
+            console.log(err);
+            res.json("boo");
+        });
 });
 
 module.exports = router;
