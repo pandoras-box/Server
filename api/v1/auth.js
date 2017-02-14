@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const dbQueries = require('../../db/queries');
-const fbAuth = require('../../auth/facebook');
+const fbAuth = require ('../../auth/facebook');
+const jwtAuth = require('../../auth/jwtAuth');
+
 
 router.post('/', function(req, res, next) {
   let currentUser = null;
@@ -32,8 +34,6 @@ router.post('/', function(req, res, next) {
                   // create JWT with full user
                   console.log(currentUser); // use this to set up the JWT
 
-                })
-        })
         .catch(function(err) {
             console.log(err);
             res.json("boo");
