@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const dbQueries = require('../../db/queries');
-const fbAuth = require ('../../auth/facebook')
+const fbAuth = require ('../../auth/facebook');
+const jwtAuth = require('../../auth/jwtAuth');
 
 router.post('/', function(req, res, next) {
   // add logic to check local storage for a Long term token
@@ -23,11 +24,12 @@ router.post('/', function(req, res, next) {
       console.log(parsedUserInfo);
       if (user) {
         console.log('no');
-        //pass the JWT
+
       } else {
         console.log('yes');
         dbQueries.addNewUser(parsedUserInfo)
         .then((newUserID)=>{
+          jwtAuth.createJWT(user);
           console.log(newUserID); // use this to set up the JWT
         })
       }

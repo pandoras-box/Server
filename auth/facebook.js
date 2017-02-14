@@ -3,6 +3,7 @@ var rp = require('request-promise');
 const FACEBOOK_URL = 'https://graph.facebook.com';
 const LOCAL_URL = 'http://localhost/callback';
 const dotenv = require('dotenv').config();
+const jwtAuth =  require('./jwtAuth'); 
 
 
 

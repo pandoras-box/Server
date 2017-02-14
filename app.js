@@ -18,6 +18,8 @@ const io = require('socket.io')(server);
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv').config();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -32,8 +34,10 @@ app.use(cors());
 
 require('./sockets').initialize(io);
 
-app.use('/', index);
-app.use('/users', users);
+app.use(expressJWT({secret: process.env.JWT_SECRET})).unless({path: ['auth']});
+
+// app.use('/', index);
+// app.use('/users', users);
 app.use('/unlock', unlock);
 app.use('/active-batch', activeBatch);
 app.use('/auth',auth);
