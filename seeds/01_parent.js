@@ -6,7 +6,7 @@ exports.seed = function(knex, Promise) {
         id:1,
         'first_name':'Kevin',
         'last_name':'Erickson',
-        'email':'Kevin@gmail.com',
+        'email':'kevin@gmail.com',
       }])
     ]);
   });
