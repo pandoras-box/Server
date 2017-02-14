@@ -34,7 +34,7 @@ app.use(cors());
 
 require('./sockets').initialize(io);
 
-app.use(expressJWT({secret: process.env.JWT_SECRET})).unless({path: ['auth']});
+// app.use(expressJWT({secret: process.env.JWT_SECRET})).unless({path: ['auth']});
 
 // app.use('/', index);
 // app.use('/users', users);
