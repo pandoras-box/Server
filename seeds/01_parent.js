@@ -4,9 +4,9 @@ exports.seed = function(knex, Promise) {
     return Promise.all([
       knex("parent").insert([{
         id:1,
-        'first_name':'Kevin',
-        'last_name':'Erickson',
-        'email':'kevin@gmail.com',
+        'first_name':'Guillermo',
+        'last_name':'Moratorio',
+        'email':'moratorio.guillermo@gmail.com',
       }])
     ]);
   });
