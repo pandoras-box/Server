@@ -12,24 +12,29 @@ router.post('/', function(req, res, next) {
             var parsedUserInfo = JSON.parse(result);
             dbQueries.checkNewUser(req.body.parentOrChild, parsedUserInfo.email)
                 .then((user) => { // if user is found
+                  currentUser = user;
                     if (user) {
-                        if (req.body.parentOrChild === 'child') {
+                        if (req.body.parentOrChild === 'child' && user.first_name === null) {
                             // check if they have all information
+                            currentUser.badChild = false;
+                            return user
                         } else {
+                            currentUser.badChild = false;
                             return user
                         }
                     } else {
+                      currentUser.badChild = false;
                         if (req.body.parentOrChild === 'parent') {
                             return dbQueries.addNewUser(req.body.parentOrChild, parsedUserInfo)
                         } else if (req.body.parentOrChild === 'child') {
                             // if child... need to check here if they have a parent in the DB
                             //if yes, return child user
                             //if no, we need to kick them out somehow
+                            return dbQueries.checkParent(user)
                         }
                     }
                 })
                 .then((user) => {
-                    currentUser = user;
                     if (req.body.parentOrChild === 'parent') {
                         return dbQueries.addParentChild(user.id)
                     } else if (req.body.parentOrChild === 'child') {
