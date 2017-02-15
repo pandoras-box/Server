@@ -29,5 +29,11 @@ module.exports = {
     .insert({
       parent_id:id
     });
+  },
+  checkParent: function(user){
+    knex('parent_child')
+    .select('parent_child.id')
+    .join('child','parent_child.child_id','child.id')
+    .where('parent_child.child_id', user.id)
   }
 };
