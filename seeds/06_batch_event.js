@@ -7,22 +7,25 @@ exports.seed = function(knex, Promise) {
         'event_id':1,
         'batch_id':1,
         'parent_child_id':1,
-        'approved':false,
-        'active':true
+        'active':true,
+        'status': 'unstarted',
+        'description': "Don't forget to make your bed too!"
       },{
         id:2,
         'event_id':2,
         'batch_id':1,
         'parent_child_id':1,
-        'approved':false,
-        'active':true
+        'active':true,
+        'status': 'pending',
+        'description': "That means both cans and the recycling!"
       },{
         id:3,
         'event_id':3,
         'batch_id':1,
         'parent_child_id':1,
-        'approved':false,
-        'active':true
+        'active':true,
+        'status': 'complete',
+        'description': "ALL of them!"
       }])
     ]);
   });
