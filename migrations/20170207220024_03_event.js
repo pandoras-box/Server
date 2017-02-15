@@ -1,7 +1,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("event",function(table){
     table.increments();
-    table.string('description').notNullable();
+    table.string('category').notNullable();
   });
 };
 
