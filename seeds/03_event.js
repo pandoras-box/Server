@@ -4,13 +4,13 @@ exports.seed = function(knex, Promise) {
     return Promise.all([
       knex("event").insert([{
         id:1,
-        'description':'Clean Room'
+        'category':'Clean Room'
       },{
         id:2,
-        'description':'Take Out Trash'
+        'category':'Take Out Trash'
       },{
         id:3,
-        'description':'Clean Dishes'
+        'category':'Clean Dishes'
       }])
     ]);
   });
