@@ -1,3 +1,5 @@
+const jwtAuth = require('../auth/jwtAuth');
+
 function initialize(io) {
   io.on('connection', connected);
 }
@@ -8,17 +10,20 @@ function connected(socket) {
     hello:'world'
   });
 
-  socket.on('authorizeLoggedIn', authorizeLoggedIn);
-  socket.on('anotherEventName', anotherEventName);
+  socket.on('updateTaskApproval', updateTaskApproval);
+  socket.on('testConnection', testConnection);
 
 }
 
-function authorizeLoggedIn(data){
-  
+function updateTaskApproval(data){
+  if(data.token){
+    const user = jwtAuth.decodeJWT(data.token);
+    
+  }
 
 }
 
-function anotherEventName(data) {
+function testConnection(data) {
   console.log(data);
 }
 
