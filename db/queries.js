@@ -25,15 +25,23 @@ module.exports = {
 
   },
   addParentChild: function(id){
-    knex('parent_child')
+    return knex('parent_child')
     .insert({
       parent_id:id
     });
   },
   checkParent: function(user){
-    knex('parent_child')
+    return knex('parent_child')
     .select('parent_child.id')
     .join('child','parent_child.child_id','child.id')
     .where('parent_child.child_id', user.id)
+  },
+  updateChild: function(user){
+    return knex('child')
+    .where('child.email',user.email)
+    .update({
+      first_name: user.name.substring(0,user.name.indexOf(' ')),
+      last_name: user.name.substring(user.name.indexOf(' ') + 1,user.name.length)
+    },'*')
   }
 };
