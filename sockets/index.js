@@ -12,15 +12,21 @@ function connected(socket) {
 
   socket.on('updateTaskApproval', updateTaskApproval);
   socket.on('testConnection', testConnection);
+  socket.on('create', create);
+
 
 }
 
 function updateTaskApproval(data){
   if(data.token){
     const user = jwtAuth.decodeJWT(data.token);
-    
+
   }
 
+}
+
+function create(roomID) {
+  socket.join(roomID);
 }
 
 function testConnection(data) {

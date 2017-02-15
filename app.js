@@ -17,6 +17,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
+const jwtAuth = require('./auth/jwtAuth');
 
 const dotenv = require('dotenv').config();
 
@@ -34,12 +35,27 @@ app.use(cors());
 
 require('./sockets').initialize(io);
 
-// app.use(expressJWT({secret: process.env.JWT_SECRET})).unless({path: ['auth']});
+function ensureLoggedIn(req, res, next) {
+  const token = req.body.userToken;
+    if (token) {
+      req.user = jwtAuth.decodeJWT(token);
+        console.log("User is authorized");
+        next();
+
+    } else {
+        console.log("Unauthorized");
+        res.json({
+                checkedAuthorization: true,
+                authorized: false
+            });
+    }
+}
+
 
 // app.use('/', index);
 // app.use('/users', users);
 app.use('/unlock', unlock);
-app.use('/active-batch', activeBatch);
+app.use('/active-batch', ensureLoggedIn, activeBatch);
 app.use('/auth',auth);
 
 // catch 404 and forward to error handler

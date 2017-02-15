@@ -2,10 +2,18 @@ var express = require('express');
 var router = express.Router();
 const dbQueries = require('../../db/queries');
 
-router.get('/:id', function(req, res, next) {
-  dbQueries.getActiveTasks(1)  // need to change the hard coded id
+router.post('/:id', function(req, res, next) {
+  console.log("Make it to active-batch route");
+  const user = req.user;
+  dbQueries.getActiveTasks(user.id)
   .then((tasks)=>{
-    res.json(tasks);
+    user.tasks = tasks;
+    const returnObject = {
+      user:user,
+      checkedAuthorization: true,
+      authorized: true
+    }
+    res.json(returnObject);
   });
 
 });
