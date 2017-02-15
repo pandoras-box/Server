@@ -8,7 +8,7 @@ const dotenv = require('dotenv').config();
 
 
 router.post('/', function(req, res, next) {
-    fbAuth.getFBShortAccess(req.body.token)
+   fbAuth.getFBShortAccess(req.body.token)
         .then(function(result) {
             var parsedUserInfo = JSON.parse(result);
             const type = req.body.parentOrChild
@@ -27,7 +27,7 @@ router.post('/', function(req, res, next) {
                         }
                     } else {
                         if (type === 'parent') {
-                            return dbQueries.addNewUser(type, parsedUserInfo)
+                            return dbQueries.addNewUser(type, parsedUserInfo);
                         } else if (type === 'child') {
                             childUser = {
                               noParent:true,
@@ -38,13 +38,18 @@ router.post('/', function(req, res, next) {
                     }
                 })
                 .then((user) => {
+                  let jwtToken = null;
                     if (user.noParent) {
                       // boot
-                      return null;
+                      jwtToken = null;
                     } else {
                       user.type = type;
-                      return jwtAuth.createJWT(user)
+                       jwtToken =  jwtAuth.createJWT(user);
+                      // const decodedToken = jwtAuth.decodeJWT(jwtToken);
                     }
+                    res.json({
+                      token: jwtToken
+                    }) 
                 });
         })
     .catch(function(err) {
