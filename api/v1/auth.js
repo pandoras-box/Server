@@ -12,6 +12,7 @@ router.post('/', function(req, res, next) {
         .then(function(result) {
             var parsedUserInfo = JSON.parse(result);
             const type = req.body.parentOrChild
+            console.log("USER TYPE: ", type);
             dbQueries.checkNewUser(type, parsedUserInfo.email)
                 .then((user) => { // if user is found
                     if (user) {

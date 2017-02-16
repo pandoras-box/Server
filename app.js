@@ -22,6 +22,8 @@ const io = require('socket.io')(server);
 const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const jwtAuth = require('./auth/jwtAuth');
+const dbQueries = require('./db/queries');
+
 
 const dotenv = require('dotenv').config();
 
@@ -33,20 +35,29 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 app.use(cors());
 
 require('./sockets').initialize(io);
 
 function ensureLoggedIn(req, res, next) {
-  const token = req.body.userToken;
+    const token = req.body.userToken;
     if (token) {
-      req.user = jwtAuth.decodeJWT(token);
-      req.user.checkedAuthorization = true;
-      req.user.authorized = true;
-        console.log("User is authorized");
-        next();
+        const decryptedUser = jwtAuth.decodeJWT(token);
+        dbQueries.getUser(decryptedUser)
+            .then((user) => {
+                user.type = decryptedUser.type;
+                user.checkedAuthorization = true;
+                user.authorized = true;
+                req.user = user;
+                // console.log(req.user);
+                console.log("User is authorized");
+                next();
+            })
+
     } else {
         console.log("Unauthorized");
         let user = {};
@@ -63,24 +74,27 @@ app.use('/unlock', unlock);
 // app.use('/active-batch', ensureLoggedIn, activeBatch);
 // app.use('/account-page-info', ensureLoggedIn, accountPageInfo);
 // app.use('/pair-parent-child', ensureLoggedIn, pairParentChild);
-app.use('/auth',auth);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
-module.exports = {app, server};
+module.exports = {
+    app,
+    server
+};
