@@ -9,7 +9,7 @@ module.exports = {
             })
             .then((id)=>{
               console.log(id);
-              return knex.select('event.category','batch_event.description', 'batch_event.status')
+              return knex.select('event.category','batch_event.description', 'batch_event.status', 'batch_event.id')
                   .from('batch_event')
                   .join('event', 'batch_event.event_id', 'event.id')
                   .where('parent_child_id', id.parent_id)
@@ -142,7 +142,7 @@ module.exports = {
           return Promise.all(promises)
         })
         .then((batchEvents)=>{
-          console.log(batchEvents);
+
         })
     }
 };
