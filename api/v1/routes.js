@@ -61,8 +61,11 @@ router.post('/active-batch/:id', function(req, res, next) {
 router.post('/get-user', function(req, res, next) {
     const user = req.user;
     dbQueries.getUser(user)
-        .then((user) => {
-            res.json(user);
+        .then((dbUser) => {
+            dbUser.type = user.type;
+            dbUser.authorized = user.authorized;
+            dbUser.checkedAuthorization = user.checkedAuthorization;
+            res.json(dbUser);
         });
 
 });

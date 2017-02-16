@@ -25,7 +25,7 @@ function updateTaskApproval(data) {
     const io = getIO();
     if (data.token) {
         const user = jwtAuth.decodeJWT(data.token);
-        console.log(data);
+        // console.log(data);
 
     }
 
@@ -33,8 +33,7 @@ function updateTaskApproval(data) {
 
 function room(socket) {
     return function(connectionObject) {
-        console.log("Created room?");
-        console.log(connectionObject);
+        console.log("Room socket received this: ", connectionObject);
         // socket.join(roomID);
         // console.log(`Joined Room ${roomID}!`);
     }
