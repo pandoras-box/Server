@@ -14,23 +14,28 @@ module.exports = {
             .where('email', email)
             .first();
     },
-    addNewUser: function(parentOrChild, user) {
-        return knex(parentOrChild)
+    addParent: function(user) {
+        return knex('parent')
             .insert({
                 first_name: user.name.substring(0, user.name.indexOf(' ')),
                 last_name: user.name.substring(user.name.indexOf(' ') + 1, user.name.length),
-                email: user.email
+                email: user.email,
+                is_paired: false
             }, '*')
             .then((user) => {
                 return user[0];
             })
 
     },
-    addParentChild: function(id) {
+    createParentChildEntry: function(parentID, childID) {
         return knex('parent_child')
             .insert({
-                parent_id: id
-            });
+                parent_id: parentID,
+                child_id: childID
+            }, '*')
+            .then((entry)=>{
+              return entry[0];
+            })
     },
     checkParent: function(user) {
         return knex('parent_child')
@@ -43,10 +48,46 @@ module.exports = {
             .where('child.email', user.email)
             .update({
                 first_name: user.name.substring(0, user.name.indexOf(' ')),
-                last_name: user.name.substring(user.name.indexOf(' ') + 1, user.name.length)
+                last_name: user.name.substring(user.name.indexOf(' ') + 1, user.name.length),
+                is_paired: true
             }, '*')
             .then((user) => {
                 return user[0];
             })
+    },
+    getChildInfo: function(parent) {
+        return knex('child')
+            .join('parent_child', 'child.id', 'parent_child.child_id')
+            .where('parent_child.parent_id', parent.id)
+    },
+    addChild: function(parent) {
+        return knex('child')
+            .insert({
+                email: parent.childEmail,
+                is_paired: true
+            },'*')
+            .then((child) => {
+                return child[0];
+            })
+    },
+    updateParentAsPaired: function(parent){
+      return knex('parent')
+          .where('id', parent.id)
+          .update({
+              is_paired: true
+          }, '*')
+          .then((user) => {
+              return user[0];
+          })
+    },
+    createBatch: function(parent){
+      return knex('batch')
+          .insert({
+            created_date: new Date(),
+            parent_child_id: parent.parentChildID
+          },'*')
+          .then((batch) => {
+              return batch[0];
+          })
     }
 };

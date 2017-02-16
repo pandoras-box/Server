@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
         'first_name':'Guillermo',
         'last_name':'Moratorio',
         'email':'moratorio.guillermo@gmail.com',
+        'is_paired': false
       }])
     ]);
   });

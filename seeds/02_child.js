@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
         'first_name':'Dillon',
         'last_name':'Corkran',
         'email':'dill@gmail.com',
+        'is_paired': true
       },{
         id:2,
         'email':'dillon.corkran@colorado.edu'
