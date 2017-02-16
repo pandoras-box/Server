@@ -8,12 +8,13 @@ router.post('/validate', (req, res, next) => {
 
 });
 
-router.post('/account-page-info', function(req, res, next) {
+router.post('/get-child-info', function(req, res, next) {
     const user = req.user;
     if (user.is_paired) {
         dbQueries.getChildInfo(user)
             .then((child) => {
                 user.childEmail = child.email;
+                user.childID = child.id;
                 res.json(user);
             })
     } else {
@@ -60,11 +61,15 @@ router.post('/active-batch/:id', function(req, res, next) {
 router.post('/get-user', function(req, res, next) {
     const user = req.user;
     dbQueries.getUser(user)
-        .then((user) => {
-            res.json(user);
+        .then((dbUser) => {
+            dbUser.type = user.type;
+            dbUser.authorized = user.authorized;
+            dbUser.checkedAuthorization = user.checkedAuthorization;
+            res.json(dbUser);
         });
 
 });
+
 
 router.post('/event',function(req,res,next){
     const user = req.user;
@@ -81,6 +86,16 @@ router.post('/batch',function(req,res,next){
       .then((result)=>{
           console.log(result);
       })
+
+router.post('/get-parent-child-id', (req, res, next) => {
+    const user = req.user;
+    dbQueries.getParentChildID(user)
+        .then((id) => {
+            res.json({
+                id
+            })
+        })
+
 })
 
 
