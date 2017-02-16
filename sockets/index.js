@@ -27,8 +27,8 @@ function updateTaskApproval(data){
 }
 
 function create(roomID) {
-  socket.join(roomID);
-  console.log(`Joined Room ${roomID}!`);
+  // socket.join(roomID);
+  // console.log(`Joined Room ${roomID}!`);
 }
 
 function testConnection(data) {
