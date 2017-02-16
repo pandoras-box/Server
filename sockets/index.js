@@ -23,19 +23,16 @@ function connected(socket) {
 
 function updateTaskApproval(data) {
     const io = getIO();
-    if (data.token) {
-        const user = jwtAuth.decodeJWT(data.token);
-        // console.log(data);
-
-    }
+    console.log(data);
 
 }
 
 function room(socket) {
     return function(connectionObject) {
-        console.log("Room socket received this: ", connectionObject);
-        // socket.join(roomID);
-        // console.log(`Joined Room ${roomID}!`);
+        const roomID = connectionObject.roomID;
+        const user = connectionObject.user;
+        socket.join(roomID);
+        console.log(`Joined Room ${roomID}!`);
     }
 }
 

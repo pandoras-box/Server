@@ -1,5 +1,5 @@
 exports.seed = function(knex, Promise) {
-  // return knex.raw('DELETE FROM "batch"; ALTER SEQUENCE batch_id_seq RESTART WITH 3')
+  return knex.raw('DELETE FROM "batch"; ALTER SEQUENCE batch_id_seq RESTART WITH 1')
   // .then(()=>{
   //   return Promise.all([
   //     knex("batch").insert([{
