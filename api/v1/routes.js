@@ -44,7 +44,6 @@ router.post('/pair-parent-child', function(req, res, next) {
             globalParent.batchID = batch.id;
             res.json(globalParent);
         })
-
 });
 
 router.post('/active-batch/:id', function(req, res, next) {
@@ -54,7 +53,6 @@ router.post('/active-batch/:id', function(req, res, next) {
             user.tasks = tasks;
             res.json(user);
         });
-
 });
 
 
@@ -67,25 +65,26 @@ router.post('/get-user', function(req, res, next) {
             dbUser.checkedAuthorization = user.checkedAuthorization;
             res.json(dbUser);
         });
-
 });
 
 
-router.post('/event',function(req,res,next){
+router.post('/event', function(req, res, next) {
     const user = req.user;
     dbQueries.getEvents()
-      .then((events)=>{
-          user.events = events;
-          res.json(user);
-      })
-})
+        .then((events) => {
+            user.events = events;
+            res.json(user);
+        })
+});
 
-router.post('/batch',function(req,res,next){
+router.post('/batch', function(req, res, next) {
     const user = req.user;
     dbQueries.postBatch(user, req.body.tempTasks)
-      .then((result)=>{
-          console.log(result);
-      })
+        .then((result) => {
+            console.log(result);
+        })
+
+});
 
 router.post('/get-parent-child-id', (req, res, next) => {
     const user = req.user;
@@ -95,8 +94,7 @@ router.post('/get-parent-child-id', (req, res, next) => {
                 id
             })
         })
-
-})
+});
 
 
 
