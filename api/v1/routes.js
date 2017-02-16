@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 const dbQueries = require('../../db/queries');
 
+router.post('/validate', (req, res, next) => {
+    const user = req.user;
+    res.json(user);
+
+});
+
 router.post('/account-page-info', function(req, res, next) {
     const user = req.user;
     if (user.is_paired) {
@@ -20,7 +26,6 @@ router.post('/pair-parent-child', function(req, res, next) {
     const childEmail = req.body.childEmail;
     parent.childEmail = childEmail;
     let globalParent = parent;
-    console.log(parent);
     dbQueries.addChild(parent)
         .then((child) => {
             globalParent.childID = child.id;
@@ -35,8 +40,8 @@ router.post('/pair-parent-child', function(req, res, next) {
             return dbQueries.createBatch(globalParent);
         })
         .then((batch) => {
-          globalParent.batchID = batch.id;
-          res.json(globalParent);
+            globalParent.batchID = batch.id;
+            res.json(globalParent);
         })
 
 });
@@ -46,6 +51,16 @@ router.post('/active-batch/:id', function(req, res, next) {
     dbQueries.getActiveTasks(user.id)
         .then((tasks) => {
             user.tasks = tasks;
+            res.json(user);
+        });
+
+});
+
+
+router.post('/get-user', function(req, res, next) {
+    const user = req.user;
+    dbQueries.getUser(user)
+        .then((user) => {
             res.json(user);
         });
 

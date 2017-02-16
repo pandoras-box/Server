@@ -33,8 +33,8 @@ module.exports = {
                 parent_id: parentID,
                 child_id: childID
             }, '*')
-            .then((entry)=>{
-              return entry[0];
+            .then((entry) => {
+                return entry[0];
             })
     },
     checkParent: function(user) {
@@ -59,35 +59,42 @@ module.exports = {
         return knex('child')
             .join('parent_child', 'child.id', 'parent_child.child_id')
             .where('parent_child.parent_id', parent.id)
+            .first()
     },
     addChild: function(parent) {
         return knex('child')
             .insert({
                 email: parent.childEmail,
                 is_paired: true
-            },'*')
+            }, '*')
             .then((child) => {
                 return child[0];
             })
     },
-    updateParentAsPaired: function(parent){
-      return knex('parent')
-          .where('id', parent.id)
-          .update({
-              is_paired: true
-          }, '*')
-          .then((user) => {
-              return user[0];
-          })
+    updateParentAsPaired: function(parent) {
+        return knex('parent')
+            .where('id', parent.id)
+            .update({
+                is_paired: true
+            }, '*')
+            .then((user) => {
+                return user[0];
+            })
     },
-    createBatch: function(parent){
-      return knex('batch')
-          .insert({
-            created_date: new Date(),
-            parent_child_id: parent.parentChildID
-          },'*')
-          .then((batch) => {
-              return batch[0];
-          })
+    createBatch: function(parent) {
+        return knex('batch')
+            .insert({
+                created_date: new Date(),
+                parent_child_id: parent.parentChildID
+            }, '*')
+            .then((batch) => {
+                return batch[0];
+            })
+    },
+    getUser: function(user) {
+        return knex(user.type)
+            .select('*')
+            .where('id', user.id)
+            .first()
     }
 };

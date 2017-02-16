@@ -10,8 +10,7 @@ module.exports = {
       type: user.type,
       first_name: user.first_name,
       last_name: user.last_name,
-      email: user.email,
-      is_paired: user.is_paired
+      email: user.email
     }
     return jwt.sign(jwtPayload, process.env.JWT_SECRET);
   },
