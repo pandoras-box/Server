@@ -20,13 +20,15 @@ function connected(socket) {
 function updateTaskApproval(data){
   if(data.token){
     const user = jwtAuth.decodeJWT(data.token);
+    console.log(data);
 
   }
 
 }
 
 function create(roomID) {
-  socket.join(roomID);
+  // socket.join(roomID);
+  // console.log(`Joined Room ${roomID}!`);
 }
 
 function testConnection(data) {

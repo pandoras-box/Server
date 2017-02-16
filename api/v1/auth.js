@@ -27,7 +27,7 @@ router.post('/', function(req, res, next) {
                         }
                     } else {
                         if (type === 'parent') {
-                            return dbQueries.addNewUser(type, parsedUserInfo);
+                            return dbQueries.addParent(parsedUserInfo);
                         } else if (type === 'child') {
                             childUser = {
                               noParent:true,
@@ -49,7 +49,7 @@ router.post('/', function(req, res, next) {
                     }
                     res.json({
                       token: jwtToken
-                    }) 
+                    })
                 });
         })
     .catch(function(err) {
