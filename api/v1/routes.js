@@ -46,10 +46,11 @@ router.post('/pair-parent-child', function(req, res, next) {
         })
 });
 
-router.post('/active-batch/:id', function(req, res, next) {
+router.post('/active-batch', function(req, res, next) {
     const user = req.user;
     dbQueries.getActiveTasks(user.id)
         .then((tasks) => {
+          console.log(tasks);
             user.tasks = tasks;
             res.json(user);
         });

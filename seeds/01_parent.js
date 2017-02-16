@@ -1,5 +1,5 @@
 exports.seed = function(knex, Promise) {
-  // return knex.raw('DELETE FROM "parent"; ALTER SEQUENCE parent_id_seq RESTART WITH 2')
+  return knex.raw('DELETE FROM "parent"; ALTER SEQUENCE parent_id_seq RESTART WITH 1')
   // .then(()=>{
   //   return Promise.all([
   //     knex("parent").insert([{

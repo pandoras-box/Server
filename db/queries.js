@@ -2,11 +2,19 @@ const knex = require('./connection');
 
 module.exports = {
     getActiveTasks: function(id) {
-        return knex.select('event.category', 'batch_event.status')
-            .from('batch_event')
-            .join('event', 'batch_event.event_id', 'event.id')
-            .where('parent_child_id', id)
-            .andWhere('active', true);
+        return knex('parent_child')
+          .where('parent_id',id)
+            .then((id)=>{
+              return id[0];
+            })
+            .then((id)=>{
+              console.log(id);
+              return knex.select('event.category','batch_event.description', 'batch_event.status')
+                  .from('batch_event')
+                  .join('event', 'batch_event.event_id', 'event.id')
+                  .where('parent_child_id', id.parent_id)
+                  .andWhere('active', true);
+            })
     },
     checkNewUser: function(parentOrChild, email) {
         // need to handle child at some point
