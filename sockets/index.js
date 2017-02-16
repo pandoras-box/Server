@@ -16,15 +16,26 @@ function connected(socket) {
 
     socket.on('updateTaskApproval', updateTaskApproval);
     socket.on('testConnection', testConnection);
+    socket.on('unlockBox', unlockBox);
     socket.on('room', room(socket));
-
-
 }
 
 function updateTaskApproval(data) {
+    const completed = data.accepted;
+    const ROOM = 1;
     const io = getIO();
     console.log(data);
+    const updatePayload = {
+      task: 1,
+      completed: completed
+    }
+    io.sockets.emit('taskUpdate', updatePayload);
+}
 
+function unlockBox(data) {
+    const io = getIO();
+    console.log("UNLOCKING")
+    io.sockets.emit('unlockPi', {unlock: true});
 }
 
 function room(socket) {
