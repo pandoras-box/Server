@@ -9,6 +9,7 @@ const cors = require('cors');
 const unlock = require('./api/v1/unlock');
 const routes = require('./api/v1/routes');
 const auth = require('./api/v1/auth');
+const emit = require('./api/v1/emit');
 
 const app = express();
 const server = require('http').Server(app);
@@ -65,6 +66,8 @@ function ensureLoggedIn(req, res, next) {
 app.use('/secure', ensureLoggedIn, routes);
 app.use('/unlock', unlock);
 app.use('/auth', auth);
+app.use('/emit', emit);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
