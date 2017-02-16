@@ -66,6 +66,23 @@ router.post('/get-user', function(req, res, next) {
 
 });
 
+router.post('/event',function(req,res,next){
+    const user = req.user;
+    dbQueries.getEvents()
+      .then((events)=>{
+          user.events = events;
+          res.json(user);
+      })
+})
+
+router.post('/batch',function(req,res,next){
+    const user = req.user;
+    dbQueries.postBatch(user, req.body.tempTasks)
+      .then((result)=>{
+          console.log(result);
+      })
+})
+
 
 
 
