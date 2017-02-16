@@ -6,14 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
 const unlock = require('./api/v1/unlock');
-const activeBatch = require('./api/v1/active-batch');
 const routes = require('./api/v1/routes');
-const accountPageInfo = require('./api/v1/account-page-info');
-const pairParentChild = require('./api/v1/pair-parent-child');
-
 const auth = require('./api/v1/auth');
 
 const app = express();
@@ -69,11 +63,7 @@ function ensureLoggedIn(req, res, next) {
 
 
 app.use('/secure', ensureLoggedIn, routes);
-// app.use('/users', users);
 app.use('/unlock', unlock);
-// app.use('/active-batch', ensureLoggedIn, activeBatch);
-// app.use('/account-page-info', ensureLoggedIn, accountPageInfo);
-// app.use('/pair-parent-child', ensureLoggedIn, pairParentChild);
 app.use('/auth', auth);
 
 // catch 404 and forward to error handler
