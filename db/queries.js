@@ -162,6 +162,7 @@ module.exports = {
             }, '*')
             .where('id', task.id)
             .then((task) => {
+                
                 return task[0];
             })
     }
