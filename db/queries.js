@@ -67,9 +67,9 @@ module.exports = {
             })
     },
     getChildInfo: function(user) {
-        return knex(`${user.type}`)
-            .join('parent_child', `${user.type}.id`, `parent_child.${user.type}_id`)
-            .where(`parent_child.${user.type}_id`, user.id)
+        return knex(`${user.oppositeType}`)
+            .join('parent_child', `${user.oppositeType}.id`, `parent_child.${user.oppositeType}_id`)
+            .where(`parent_child.${user.oppositeType}_id`, user.id)
             .first()
     },
     addChild: function(parent) {
