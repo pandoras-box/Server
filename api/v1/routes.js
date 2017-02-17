@@ -5,7 +5,6 @@ const dbQueries = require('../../db/queries');
 router.post('/validate', (req, res, next) => {
     const user = req.user;
     res.json(user);
-
 });
 
 router.post('/get-child-info', function(req, res, next) {
@@ -50,7 +49,7 @@ router.post('/active-batch', function(req, res, next) {
     const user = req.user;
     dbQueries.getActiveTasks(user.id)
         .then((tasks) => {
-          console.log(tasks);
+            console.log(tasks);
             user.tasks = tasks;
             res.json(user);
         });
@@ -96,6 +95,16 @@ router.post('/get-parent-child-id', (req, res, next) => {
             })
         })
 });
+
+router.post('/update-task-status', (req, res, next) => {
+    const user = req.user;
+    const task = req.body.currentTask;
+    console.log(task);
+    dbQueries.updateTaskStatus(task)
+        .then((updatedTask) => {
+          res.json(updatedTask);
+        })
+})
 
 
 
