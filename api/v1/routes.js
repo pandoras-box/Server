@@ -81,7 +81,7 @@ router.post('/batch', function(req, res, next) {
     const user = req.user;
     dbQueries.postBatch(user, req.body.tempTasks)
         .then((result) => {
-            console.log(result);
+            res.json(result);
         })
 
 });
