@@ -117,12 +117,14 @@ router.post('/send-for-logs', (req, res, next) => {
 });
 
 router.post('/close-batch', (req, res, next) => {
+  console.log("Made it to route!");
     const user = req.user;
     const tasks = req.body.tasks;
     let closedTasks = tasks.map((task) => {
+        console.log("In the map", task)
         return dbQueries.closeTask(task);
     })
-    return Promise.all(closedTasks);
+    res.json(Promise.all(closedTasks));
 })
 
 
