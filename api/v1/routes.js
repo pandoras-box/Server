@@ -11,9 +11,9 @@ router.post('/get-child-info', function(req, res, next) {
     const user = req.user;
     if (user.is_paired) {
         dbQueries.getChildInfo(user)
-            .then((child) => {
-                user.childEmail = child.email;
-                user.childID = child.id;
+            .then((link) => {
+                user.linkEmail = link.email;
+                user.childID = link.id;
                 res.json(user);
             })
     } else {
