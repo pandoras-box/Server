@@ -3,17 +3,17 @@ const knex = require('./connection');
 module.exports = {
     getActiveTasks: function(id) {
         return knex('parent_child')
-          .where('parent_id',id)
-            .then((id)=>{
-              return id[0];
+            .where('parent_id', id)
+            .then((id) => {
+                return id[0];
             })
-            .then((id)=>{
-              console.log(id);
-              return knex.select('event.category','batch_event.description', 'batch_event.status', 'batch_event.id')
-                  .from('batch_event')
-                  .join('event', 'batch_event.event_id', 'event.id')
-                  .where('parent_child_id', id.parent_id)
-                  .andWhere('active', true);
+            .then((id) => {
+                console.log(id);
+                return knex.select('event.category', 'batch_event.description', 'batch_event.status', 'batch_event.id')
+                    .from('batch_event')
+                    .join('event', 'batch_event.event_id', 'event.id')
+                    .where('parent_child_id', id.parent_id)
+                    .andWhere('active', true);
             })
     },
     checkNewUser: function(parentOrChild, email) {
@@ -108,7 +108,7 @@ module.exports = {
             .where('id', user.id)
             .first()
     },
-    getEvents: function(){
+    getEvents: function() {
         return knex('event');
     },
     postBatch: function(user,batch) {
@@ -144,5 +144,25 @@ module.exports = {
         .then((batchEvents)=>{
           return batchEvents;
         })
+    },
+    updateTaskStatus: function(updatedTask) {
+        return knex('batch_event')
+            .update({
+                status: updatedTask.status
+            }, '*')
+            .where('id', updatedTask.id)
+            .then((task) => {
+                return task[0];
+            })
+    },
+    closeTask: function(task){
+      return knex('batch_event')
+          .update({
+              active: false
+          }, '*')
+          .where('id', task.id)
+          .then((task) => {
+              return task[0];
+          })
     }
 };
