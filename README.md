@@ -3,7 +3,9 @@
 
 This server is hosted at (http://pandoras-box-team.herokuapp.com/).
 
+Pandora's Box is a mobile app and Internet of Things project designed to streamline and gamify Interactions with parents and children on the subject of chores or tasks. It sets up a system where there  is a tangible reward controlled by the mobile application. 
 
+Parents create tasks remotely and approve them but the kids ultimately get the satisfaction of remotely opening the box to get their reward. 
 
 ### Installing
 NOTE: You will need clone this server repo, the client repo at (https://github.com/pandoras-box/Client) and the Raspberry Pi server repo at (https://github.com/pandoras-box/Pi-Server).
