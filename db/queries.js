@@ -155,4 +155,14 @@ module.exports = {
                 return task[0];
             })
     },
+    closeTask: function(task){
+      return knex('batch_event')
+          .update({
+              active: false
+          }, '*')
+          .where('id', task.id)
+          .then((task) => {
+              return task[0];
+          })
+    }
 };

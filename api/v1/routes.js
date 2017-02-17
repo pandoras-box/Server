@@ -49,7 +49,7 @@ router.post('/active-batch', function(req, res, next) {
     const user = req.user;
     dbQueries.getActiveTasks(user.id)
         .then((tasks) => {
-            console.log(tasks);
+            // console.log(tasks);
             user.tasks = tasks;
             res.json(user);
         });
@@ -99,13 +99,26 @@ router.post('/get-parent-child-id', (req, res, next) => {
 router.post('/update-task-status', (req, res, next) => {
     const user = req.user;
     const task = req.body.currentTask;
-    console.log(task);
     dbQueries.updateTaskStatus(task)
         .then((updatedTask) => {
-          res.json(updatedTask);
+            res.json(updatedTask);
         })
-})
+});
 
+router.post('/send-for-logs', (req, res, next) => {
+    const user = req.user;
+    const logItem = req.body.delivery;
+    console.log(logItem);
+});
+
+router.post('/close-batch', (req, res, next) => {
+    const user = req.user;
+    const tasks = req.body.tasks;
+    let closedTasks = tasks.map((task) => {
+        return dbQueries.closeTask(task);
+    })
+    return Promise.all(closedTasks);
+})
 
 
 
