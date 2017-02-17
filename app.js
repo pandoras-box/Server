@@ -48,8 +48,8 @@ function ensureLoggedIn(req, res, next) {
                 user.checkedAuthorization = true;
                 user.authorized = true;
                 req.user = user;
-                // console.log(req.user);
                 console.log("User is authorized");
+                // console.log(req.user);
                 next();
             })
 
