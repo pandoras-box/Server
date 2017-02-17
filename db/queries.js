@@ -142,7 +142,7 @@ module.exports = {
           return Promise.all(promises)
         })
         .then((batchEvents)=>{
-
+          return batchEvents;
         })
     }
 };
