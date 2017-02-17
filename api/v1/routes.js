@@ -9,6 +9,11 @@ router.post('/validate', (req, res, next) => {
 
 router.post('/get-child-info', function(req, res, next) {
     const user = req.user;
+    if (user.type === 'parent') {
+      user.oppositeType = 'child';
+    } else {
+      user.oppositeType = 'parent';
+    }
     if (user.is_paired) {
         dbQueries.getChildInfo(user)
             .then((link) => {
