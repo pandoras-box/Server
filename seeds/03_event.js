@@ -1,5 +1,5 @@
 exports.seed = function(knex, Promise) {
-  return knex.raw('DELETE FROM "event"; ALTER SEQUENCE event_id_seq RESTART WITH 8')
+  return knex.raw('DELETE FROM "event"; ALTER SEQUENCE event_id_seq RESTART WITH 9')
   .then(()=>{
     return Promise.all([
       knex("event").insert([{
@@ -13,16 +13,19 @@ exports.seed = function(knex, Promise) {
         'category':'Clean Dishes'
       },{
         id:4,
-        'category':'Do Homework'
+        'category':'Clean Bathroom'
       },{
         id:5,
-        'category':'Practice Instrument'
+        'category':'Do Laundry'
       },{
         id:6,
-        'category':'Play Outside'
+        'category':'Mow The Lawn'
       },{
         id:7,
-        'category':'Call Grandma'
+        'category':'Do Homework'
+      },{
+        id:8,
+        'category':'Walk The Dog'
       }])
     ]);
   });
