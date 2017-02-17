@@ -3,17 +3,17 @@ const knex = require('./connection');
 module.exports = {
     getActiveTasks: function(id) {
         return knex('parent_child')
-          .where('parent_id',id)
-            .then((id)=>{
-              return id[0];
+            .where('parent_id', id)
+            .then((id) => {
+                return id[0];
             })
-            .then((id)=>{
-              console.log(id);
-              return knex.select('event.category','batch_event.description', 'batch_event.status', 'batch_event.id')
-                  .from('batch_event')
-                  .join('event', 'batch_event.event_id', 'event.id')
-                  .where('parent_child_id', id.parent_id)
-                  .andWhere('active', true);
+            .then((id) => {
+                console.log(id);
+                return knex.select('event.category', 'batch_event.description', 'batch_event.status', 'batch_event.id')
+                    .from('batch_event')
+                    .join('event', 'batch_event.event_id', 'event.id')
+                    .where('parent_child_id', id.parent_id)
+                    .andWhere('active', true);
             })
     },
     checkNewUser: function(parentOrChild, email) {
@@ -108,41 +108,51 @@ module.exports = {
             .where('id', user.id)
             .first()
     },
-    getEvents: function(){
+    getEvents: function() {
         return knex('event');
     },
-    postBatch: function(user,batch) {
-      console.log('hello',user,batch);
-      return knex('parent_child')
-        .where('parent_id',user.id)
-        .then((parentChildID)=>{
-          console.log('hello2',parentChildID);
-          return knex('batch')
-            .insert({
-              created_date:knex.fn.now(),
-              parent_child_id:parentChildID[0].parent_id
-            },'*')
-        })
-        .then((newBatch)=>{
-          console.log('hello3');
-          let promises = [];
-          for (var i = 0; i < batch.length; i++) {
-            var currentBatch = batch[i]
-            var promise = knex('batch_event')
-              .insert({
-                status: 'unstarted',
-                active: true,
-                event_id: currentBatch.eventID,
-                batch_id: newBatch[0].id, //fill in
-                parent_child_id: newBatch[0].parent_child_id, //user something
-                description: currentBatch.description
-              });
-            promises.push(promise);
-          }
-          return Promise.all(promises)
-        })
-        .then((batchEvents)=>{
+    postBatch: function(user, batch) {
+        console.log('hello', user, batch);
+        return knex('parent_child')
+            .where('parent_id', user.id)
+            .then((parentChildID) => {
+                console.log('hello2', parentChildID);
+                return knex('batch')
+                    .insert({
+                        created_date: knex.fn.now(),
+                        parent_child_id: parentChildID[0].parent_id
+                    }, '*')
+            })
+            .then((newBatch) => {
+                console.log('hello3');
+                let promises = [];
+                for (var i = 0; i < batch.length; i++) {
+                    var currentBatch = batch[i]
+                    var promise = knex('batch_event')
+                        .insert({
+                            status: 'unstarted',
+                            active: true,
+                            event_id: currentBatch.eventID,
+                            batch_id: newBatch[0].id, //fill in
+                            parent_child_id: newBatch[0].parent_child_id, //user something
+                            description: currentBatch.description
+                        });
+                    promises.push(promise);
+                }
+                return Promise.all(promises)
+            })
+            .then((batchEvents) => {
 
-        })
-    }
+            })
+    },
+    updateTaskStatus: function(updatedTask) {
+        return knex('batch_event')
+            .update({
+                status: updatedTask.status
+            }, '*')
+            .where('id', updatedTask.id)
+            .then((task) => {
+                return task[0];
+            })
+    },
 };
